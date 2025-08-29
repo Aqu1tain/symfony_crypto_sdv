@@ -3,8 +3,6 @@ namespace App\Entity;
 
 use App\Entity\Transaction;
 use App\Repository\CryptoRepository;
-use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,20 +12,15 @@ class Crypto
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $name = '';
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class , inversedBy: 'cryptos')]
-    private ?User $user = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $value = null;
 
-    #[ORM\ManyToMany(targetEntity: Transaction::class, inversedBy: 'cryptos')]
-    private ?Transaction $transaction = null;
-
-    #[OneToMany(targetEntity: Crypto::class, mappedBy: 'cryptos')]
-    private ?Historique $historique = null;
-
-    #[ORM\Column(type: 'float', length: 255)]
-    private float $value;
+    // ✅ FIX: OneToMany must be a Collection, not a single Transaction
+    #[ORM\OneToMany(mappedBy: 'crypto', targetEntity: Transaction::class)]
+    private ?Collection $transaction = null;
 
     public function getId(): ?int {
         return $this->id;
