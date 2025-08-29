@@ -5,39 +5,59 @@ use App\Repository\HistoriqueRepository;
 use App\Entity\Crypto;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity(repositoryClass: HistoriqueRepository::class)]
 class Historique
 {
-    #[ORM\Id, ORM\Column(type: 'integer'), ORM\GeneratedValue]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $date;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $date;
+
+    #[ORM\Column(type: 'float')]
+    private float $value;
 
     #[ORM\ManyToOne(targetEntity: Crypto::class, inversedBy: 'historique')]
-    private Crypto $crypto;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Crypto $crypto = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private ?float $value;
-
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getDate(): ?string {
+    public function getDate(): \DateTimeImmutable
+    {
         return $this->date;
     }
 
-    public function getValue(): ?string {
-        return $this->value;
-    }
-
-    public function setDate(string $date): self {
+    public function setDate(\DateTimeImmutable $date): self
+    {
         $this->date = $date;
         return $this;
     }
 
-    public function setValue(string $value): self {
+    public function getValue(): float
+    {
+        return $this->value;
+    }
+
+    public function setValue(float $value): self
+    {
         $this->value = $value;
+        return $this;
+    }
+
+    public function getCrypto(): ?Crypto
+    {
+        return $this->crypto;
+    }
+
+    public function setCrypto(?Crypto $crypto): self
+    {
+        $this->crypto = $crypto;
         return $this;
     }
 }
