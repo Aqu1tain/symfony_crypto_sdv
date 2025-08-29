@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cryptos</title>
+</head>
+<body>
+<h1>Available Cryptos</h1>
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price (USD)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for crypto in cryptos %}
+        <tr>
+            <td>{{ crypto.name }}</td>
+            <td>{{ crypto.value }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="3">No cryptos available</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
