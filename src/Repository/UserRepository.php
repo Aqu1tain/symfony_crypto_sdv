@@ -13,18 +13,9 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findByName(string $name): object
+    // Use the actual column; callers were failing on 'name'
+    public function findByUsername(string $username): ?User
     {
-        return $this->findOneBy(['name' => $name]);
-    }
-
-    public function findWithTransactions(User $user): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->leftJoin('u.transactions', 't')->addSelect('t')
-            ->where('u = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->findOneBy(['username' => $username]);
     }
 }
