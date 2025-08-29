@@ -15,18 +15,20 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
-    public function findByUser(User $u): array {
+    public function findByUser(User $user): array {
         return $this->createQueryBuilder('t')
-            ->where('t.user = :user')
-            ->setParameter('user', $u)
+            ->where('t.user_sender = :user OR t.user_receiver = :user')
+            ->setParameter('user', $user)
+            ->orderBy('t.date', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
+
     public function findByCrypto(Crypto $c): array {
         return $this->createQueryBuilder('t')
-            ->where('t.transaction = :transaction')
-            ->setParameter('transaction', $c)
+            ->where('t.crypto = :crypto')
+            ->setParameter('crypto', $c)
             ->getQuery()
             ->getResult();
     }

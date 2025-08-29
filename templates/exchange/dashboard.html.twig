@@ -1,32 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>User Dashboard</title>
-</head>
-<body>
-<h1>Hello {{ app.user.name }}</h1>
+<h1>Hello {{ user.username }}</h1>
 
 <h2>Your Last Transactions</h2>
-<table border="1" cellpadding="5">
-    <thead>
-    <tr>
-        <th>Crypto</th>
-        <th>Amount</th>
-        <th>Date</th>
-    </tr>
-    </thead>
-    <tbody>
+<ul>
     {% for t in transactions %}
-        <tr>
-            <td>{{ t.crypto }}</td>
-            <td>{{ t.qte }}</td>
-            <td>{{ t.date|date('Y-m-d H:i') }}</td>
-        </tr>
+        <li>Cryptos - {{ t.qte }} at {{ t.date|date('Y-m-d H:i') }}</li>
     {% else %}
-        <tr><td colspan="3">No transactions yet</td></tr>
+        <li>No transactions yet</li>
     {% endfor %}
-    </tbody>
-</table>
-</body>
-</html>
+</ul>

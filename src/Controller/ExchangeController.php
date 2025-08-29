@@ -4,12 +4,20 @@ namespace App\Controller;
 
 use App\Repository\CryptoRepository;
 use App\Repository\TransactionRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ExchangeController extends AbstractController
 {
+    private UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     #[Route('/cryptos', name: 'crypto_list')]
     public function cryptos(CryptoRepository $cryptoRepository): Response
     {
@@ -23,15 +31,13 @@ class ExchangeController extends AbstractController
     #[Route('/dashboard', name: 'user_dashboard')]
     public function dashboard(TransactionRepository $transactionRepository): Response
     {
-        $user = $this->getUser();
+        // ✅ fetch the default user from DB
+        $user = $this->userRepository->findOneBy(['username' => 'user']);
 
-        $transactions = $transactionRepository->findBy(
-            ['user' => $user],
-            ['date' => 'DESC'],
-            10
-        );
+        $transactions = $transactionRepository->findByUser($user);
 
         return $this->render('exchange/dashboard.html.twig', [
+            'user'         => $user,
             'transactions' => $transactions,
         ]);
     }
