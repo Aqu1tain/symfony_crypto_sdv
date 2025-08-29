@@ -3,7 +3,7 @@
 <h2>Your Last Transactions</h2>
 <ul>
     {% for t in transactions %}
-        <li>Cryptos - {{ t.qte }} at {{ t.date|date('Y-m-d H:i') }}</li>
+        <li>{{ t.crypto.name }} - {{ t.qte }} at {{ t.date|date('Y-m-d H:i') }}</li>
     {% else %}
         <li>No transactions yet</li>
     {% endfor %}

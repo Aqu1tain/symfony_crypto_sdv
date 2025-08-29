@@ -2,6 +2,8 @@
 namespace App\Repository;
 
 use App\Entity\Transaction;
+use App\Entity\User;
+use App\Entity\Crypto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -13,8 +15,11 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
 
-    public function findByUser(User $user): array {
+    public function findByUser(User $user): array
+    {
         return $this->createQueryBuilder('t')
+            ->leftJoin('t.crypto', 'c')
+            ->addSelect('c')
             ->where('t.user_sender = :user OR t.user_receiver = :user')
             ->setParameter('user', $user)
             ->orderBy('t.date', 'DESC')
