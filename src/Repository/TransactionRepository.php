@@ -2,10 +2,7 @@
 namespace App\Repository;
 
 use App\Entity\Transaction;
-use App\Entity\User;
-use App\Entity\Crypto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManageManagerRegistryrRegistry;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TransactionRepository extends ServiceEntityRepository
@@ -14,6 +11,7 @@ class TransactionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Transaction::class);
     }
+
 
     public function findByUser(User $user): array {
         return $this->createQueryBuilder('t')
